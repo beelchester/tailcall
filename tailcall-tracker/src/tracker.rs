@@ -4,8 +4,8 @@ use super::Result;
 use crate::check_tracking::check_tracking;
 use crate::event::Event;
 
-const API_SECRET: &str = "GVaEzXFeRkCI9YBIylbEjQ";
-const MEASUREMENT_ID: &str = "G-JEP3QDWT0G";
+const API_SECRET: Option<&str> = option_env!("GA_API_SECRET");
+const MEASUREMENT_ID: Option<&str> = option_env!("GA_MEASUREMENT_ID");
 const BASE_URL: &str = "https://www.google-analytics.com";
 
 ///
@@ -22,8 +22,8 @@ impl Default for Tracker {
     fn default() -> Self {
         Self {
             base_url: BASE_URL.to_string(),
-            api_secret: API_SECRET.to_string(),
-            measurement_id: MEASUREMENT_ID.to_string(),
+            api_secret: API_SECRET.unwrap_or_default().to_string(),
+            measurement_id: MEASUREMENT_ID.unwrap_or_default().to_string(),
             is_tracking: check_tracking(),
         }
     }
